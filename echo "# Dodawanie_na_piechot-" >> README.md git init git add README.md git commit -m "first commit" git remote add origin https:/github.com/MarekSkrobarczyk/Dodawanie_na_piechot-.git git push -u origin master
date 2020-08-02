@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Dodawanie_na_piechote
+{
+    class Program
+    {
+        List<int> numbers;
+        Validator validator;
+
+        public class Validator
+        {
+            const String finishSign = "q";
+
+            public bool isGoodInput(String input)
+            {
+                int liczba;
+                return int.TryParse(input, out liczba);
+            }
+
+            public bool isFinishSign(String input)
+            {
+                return finishSign.Equals(input);
+            }
+        }
+
+        public Program()
+        {
+            numbers = new List<int>();
+            validator = new Validator();
+        }
+
+        public void startProgram()
+        {
+            Console.WriteLine("Please, enter numbers you want to add, or press q to quit: ");
+
+            while (true)
+            {
+                String input = Console.ReadLine();
+
+                if (validator.isFinishSign(input)) break;
+                if (!validator.isGoodInput(input))
+                {
+                    Console.WriteLine("Provided input is not a number");
+                    continue;
+                }
+
+                int liczba = int.Parse(input);
+                addAnotherNumber(liczba);
+                Console.WriteLine("Sum so far:" + getNumbersSum());
+            }
+        }
+
+        private void addAnotherNumber(int liczba)
+        {
+            numbers.Add(liczba);
+        }
+
+        private int getNumbersSum()
+        {
+            return numbers.Sum();
+        }
+
+        static void Main(string[] args)
+        {
+            Program program = new Program();
+            program.startProgram();
+        }
+    }
+}
